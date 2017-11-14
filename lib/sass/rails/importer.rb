@@ -96,12 +96,6 @@ module Sass::Rails
 
       search_paths = ([parent_dir] + load_paths).uniq
 
-      ap caller
-      ap '---'
-      ap parent_path
-      ap path
-      ap search_paths
-
       if specified_dir != "."
         search_paths.map! do |path|
           File.join(path.to_s, specified_dir)
