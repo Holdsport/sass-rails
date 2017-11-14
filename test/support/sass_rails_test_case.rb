@@ -4,6 +4,7 @@ unless defined?(Bundler)
 end
 require 'fileutils'
 require 'tmpdir'
+require 'sprockets/helpers/rails_helper'
 
 class Sass::Rails::TestCase < ActiveSupport::TestCase
 
@@ -67,8 +68,8 @@ class Sass::Rails::TestCase < ActiveSupport::TestCase
     Dir.mktmpdir do |tmpdir|
       FileUtils.cp_r "#{sourcedir}/.", tmpdir
       Dir.chdir(tmpdir) do
-        gem_options.each { |gem_name, options| modify_gem_entry gem_name, options }
-        without_gems.each { |gem_name| remove_gem name }
+        gem_options.each {|name, options| modify_gem_entry name, options}
+        without_gems.each {|name| remove_gem name}
         FileUtils.rm("Gemfile.lock") if File.exist?("Gemfile.lock")
         runcmd "bundle install --verbose"
         runcmd "bundle exec rake db:create --trace"
@@ -142,7 +143,7 @@ class Sass::Rails::TestCase < ActiveSupport::TestCase
     env["BUNDLE_GEMFILE"] = "#{working_directory}/#{gemfile}" if clean_env
     todo = Proc.new do
       r, w = IO.pipe
-      Kernel.spawn(env, cmd, :out => w , :err => w, :chdir => working_directory)
+      pid = Kernel.spawn(env, cmd, :out =>w , :err => w, :chdir => working_directory)
       w.close
       Process.wait
       output = r.read

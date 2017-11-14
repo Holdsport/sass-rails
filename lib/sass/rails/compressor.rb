@@ -1,4 +1,4 @@
-require 'sass'
+require 'sassc'
 
 module Sass
   module Rails
@@ -9,7 +9,7 @@ module Sass
 
       def compress(css)
         if css.count("\n") > 2
-          Sass::Engine.new(css,
+          SassC::Engine.new(css,
                            :syntax => :scss,
                            :cache => false,
                            :read_cache => false,

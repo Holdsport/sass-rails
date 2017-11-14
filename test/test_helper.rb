@@ -8,13 +8,15 @@ require 'rails'
 require "rails/test_help"
 require 'sass/rails'
 require 'sfl'
+require 'mocha'
 
 Rails.backtrace_cleaner.remove_silencers!
+
 
 # If developing against local dependencies, this code will ensure they get picked up
 # in the project fixtures that have their own bundle environment
 $gem_options = {}
-possible_dev_dependencies = %w(sass-rails sass rails actionpack railties sprockets journey sprockets-rails activerecord-deprecated_finders)
+possible_dev_dependencies = %w(sass-rails sass rails actionpack railties sprockets)
 Bundler.load.specs.each do |s|
   if possible_dev_dependencies.include?(s.name)
      gem_path = s.full_gem_path
